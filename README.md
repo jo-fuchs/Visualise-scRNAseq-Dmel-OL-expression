@@ -20,6 +20,5 @@ These raw data can be merged and annotated using *0_prepare_data.R* from this re
 
 The plots below show raw and modeled expression values for chaoptin (chp), a known photoreceptor-specific gene.
 
-+------------------------------------------------------------------------------+------------------------------------------------------------------+
-| ![Raw expression values of an example gene](chp_Expression.png){width="400"} | ![modeled expression values of an example gene](chp_modeled.png) |
-+------------------------------------------------------------------------------+------------------------------------------------------------------+
+|<img src="chp_Expression.png" width="400"> | <img src="chp_modeled.png" width="400"> |
+|---------------------------------------------------------|------------------------------------------------------------------|
