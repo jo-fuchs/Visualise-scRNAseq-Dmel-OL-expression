@@ -10,7 +10,7 @@ data_list$full_data <- read_csv2("Desplan_log_mean_expression_all.csv")
 
 ### define plotting functions ####
 
-## plotting modeled expression of an individual gene  #####
+## plotting modeled expression of an individual gene sorted by expression
 plot_expression_modeled <- function(gene1) {
   
   data_list$full_data %>% 
@@ -23,10 +23,10 @@ plot_expression_modeled <- function(gene1) {
                 id_cols = c("Annotation"), 
                 names_from = c("Timepoint", "Gene")) %>% 
     mutate(Expressed = rowMeans(select(., !c(Annotation))),
-           Annotation = fct_reorder(Annotation, Expressed, .desc = F)) %>% 
-     
-    filter(Expressed > 0) %>% 
-    select(!Expressed) %>% 
+           Annotation = fct_reorder(Annotation, Expressed, .desc = F)) %>%
+
+    filter(Expressed > 0) %>%
+    select(!Expressed) %>%
     pivot_longer(cols = !c("Annotation"), names_to = c("Timepoint", "Gene"), names_pattern = "(.*)_(.*)") %>% 
     
     
@@ -47,7 +47,7 @@ plot_expression_modeled <- function(gene1) {
 }
 
 
-## plotting raw (log10(expression+1)) expression of an individual gene  #####
+## plotting raw (log10(expression+1)) expression of an individual gene (sorted alphabetically)
 plot_expression_raw <- function(gene1, cutoff) {
   
   plotting <- data_list$full_data %>% 
@@ -70,7 +70,8 @@ plot_expression_raw <- function(gene1, cutoff) {
     
     
     # correct order of genes & Timepoints
-    mutate(Timepoint = factor(Timepoint, levels = c("P15", "P30", "P40", "P50", "P70", "Adult"))) %>% 
+    mutate(Timepoint = factor(Timepoint, levels = c("P15", "P30", "P40", "P50", "P70", "Adult")),
+           Annotation = fct_rev(Annotation)) %>% 
     
     # plot
     ggplot(aes(y = Annotation, fill = value, x = Timepoint)) +
@@ -83,7 +84,7 @@ plot_expression_raw <- function(gene1, cutoff) {
          y = "",
          fill = "Raw\nexpression")
   return(plotting)
- # ggsave(file.path("Expression_plots", paste(gene1, "_Expression.png", sep = "")), plotting, device = "png", width = 13, height = 35, units = "cm", bg = "white" )
+  #ggsave(paste(gene1, "_Expression.png", sep = ""), plotting, device = "png", width = 13, height = 35, units = "cm", bg = "white" )
 }
 
 
@@ -91,7 +92,7 @@ plot_expression_raw <- function(gene1, cutoff) {
 #### plot data ####
 
 
-plot_expression_modeled("Inx2")
+plot_expression_modeled("chp")
 (plot_expression_raw("chp", cutoff = 0))
 
 
